@@ -1,3 +1,7 @@
+
+import java.util.ArrayList;
+import javax.swing.table.DefaultTableModel;
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
@@ -14,6 +18,7 @@ public class vendasVIEW extends javax.swing.JFrame {
      */
     public vendasVIEW() {
         initComponents();
+        listarProdutosVendidos();
     }
 
     /**
@@ -29,7 +34,7 @@ public class vendasVIEW extends javax.swing.JFrame {
         jSeparator1 = new javax.swing.JSeparator();
         btnVoltar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        listaProdutos = new javax.swing.JTable();
+        listaProdutosVendidos = new javax.swing.JTable();
         lblTotal = new javax.swing.JLabel();
         txtTotal = new javax.swing.JTextField();
 
@@ -45,7 +50,7 @@ public class vendasVIEW extends javax.swing.JFrame {
             }
         });
 
-        listaProdutos.setModel(new javax.swing.table.DefaultTableModel(
+        listaProdutosVendidos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -56,7 +61,7 @@ public class vendasVIEW extends javax.swing.JFrame {
                 "ID", "Nome", "Valor", "Status"
             }
         ));
-        jScrollPane1.setViewportView(listaProdutos);
+        jScrollPane1.setViewportView(listaProdutosVendidos);
 
         lblTotal.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         lblTotal.setText("Valor total das vendas:");
@@ -69,9 +74,6 @@ public class vendasVIEW extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(47, 47, 47)
-                                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 440, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
                                 .addContainerGap()
                                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 493, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -88,6 +90,10 @@ public class vendasVIEW extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(txtTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 481, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -117,6 +123,35 @@ public class vendasVIEW extends javax.swing.JFrame {
         dispose();
     }//GEN-LAST:event_btnVoltarActionPerformed
 
+    private void listarProdutosVendidos() {
+
+    ProdutosDAO produtosdao = new ProdutosDAO();
+
+    DefaultTableModel model =
+            (DefaultTableModel) listaProdutosVendidos.getModel();
+
+    model.setNumRows(0);
+
+    ArrayList<ProdutosDTO> listagem =
+            produtosdao.listarProdutosVendidos();
+
+    int total = 0;
+
+    for (int i = 0; i < listagem.size(); i++) {
+
+        model.addRow(new Object[]{
+            listagem.get(i).getId(),
+            listagem.get(i).getNome(),
+            listagem.get(i).getValor(),
+            listagem.get(i).getStatus()
+        });
+
+        total += listagem.get(i).getValor();
+    }
+
+    txtTotal.setText(String.valueOf(total));
+}
+    
     /**
      * @param args the command line arguments
      */
@@ -158,7 +193,7 @@ public class vendasVIEW extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JLabel lblTotal;
-    private javax.swing.JTable listaProdutos;
+    private javax.swing.JTable listaProdutosVendidos;
     private javax.swing.JTextField txtTotal;
     // End of variables declaration//GEN-END:variables
 }
