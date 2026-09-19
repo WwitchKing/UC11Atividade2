@@ -172,6 +172,12 @@ public class cadastroVIEW extends javax.swing.JFrame {
             "Sucesso",
             JOptionPane.INFORMATION_MESSAGE
         );
+        
+        cadastroNome.setText("");
+        cadastroValor.setText("");
+        
+        cadastroNome.requestFocus();
+
 
     } catch (NumberFormatException e) {
         JOptionPane.showMessageDialog(

@@ -1,5 +1,6 @@
 
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /*
@@ -54,6 +55,11 @@ public class listagemVIEW extends javax.swing.JFrame {
                 "ID", "Nome", "Valor", "Status"
             }
         ));
+        listaProdutos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                listaProdutosMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(listaProdutos);
 
         jLabel1.setFont(new java.awt.Font("Lucida Fax", 0, 18)); // NOI18N
@@ -137,12 +143,35 @@ public class listagemVIEW extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnVenderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVenderActionPerformed
-        String id = id_produto_venda.getText();
-        
+      String id = id_produto_venda.getText();
+
+    if (id.isBlank()) {
+        JOptionPane.showMessageDialog(
+            null,
+            "Selecione um produto!",
+            "Erro",
+            JOptionPane.WARNING_MESSAGE
+        );
+        return;
+    }
+
+    try {
         ProdutosDAO produtosdao = new ProdutosDAO();
-        
-        //produtosdao.venderProduto(Integer.parseInt(id));
+
+        produtosdao.venderProduto(Integer.parseInt(id));
+
         listarProdutos();
+
+        id_produto_venda.setText("");
+
+    } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(
+            null,
+            "ID inválido!",
+            "Erro",
+            JOptionPane.ERROR_MESSAGE
+        );
+    }
     }//GEN-LAST:event_btnVenderActionPerformed
 
     private void btnVendasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVendasActionPerformed
@@ -157,6 +186,15 @@ public class listagemVIEW extends javax.swing.JFrame {
         dispose();
         
     }//GEN-LAST:event_btnVoltarActionPerformed
+
+    private void listaProdutosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_listaProdutosMouseClicked
+        int linha = listaProdutos.getSelectedRow();
+    
+        if (linha != -1) {
+        String id = listaProdutos.getValueAt(linha, 0).toString();
+        id_produto_venda.setText(id);
+    }
+         }//GEN-LAST:event_listaProdutosMouseClicked
 
     /**
      * @param args the command line arguments
