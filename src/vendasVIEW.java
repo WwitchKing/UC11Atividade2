@@ -18,6 +18,7 @@ public class vendasVIEW extends javax.swing.JFrame {
      */
     public vendasVIEW() {
         initComponents();
+        listaProdutosVendidos.setDefaultEditor(Object.class, null);
         listarProdutosVendidos();
     }
 
